@@ -44,6 +44,26 @@ const getAllAverages = async () => {
   return response.rows;
 }
 
+const getYearAverages = async (year) => {
+  const queryString= `
+  SELECT 
+    AVG(TO_NUMBER(Global_active_power, '999999999999.999')) AS Global_active_power, 
+    AVG(TO_NUMBER(Global_reactive_power, '999999999999.999')) AS Global_reactive_power,  
+    AVG(TO_NUMBER(Global_intensity, '999999999999.999')) AS Global_intensity,  
+    AVG(TO_NUMBER(Sub_metering_1, '999999999999.999')) AS Sub_metering_1, 
+    AVG(TO_NUMBER(Sub_metering_2, '999999999999.999')) AS Sub_metering_2, 
+    AVG(TO_NUMBER(Sub_metering_3, '999999999999.999')) AS Sub_metering_3
+  FROM power_usage
+  WHERE
+    right(Date, 4) = $1;
+  `;
+console.log(year);
+  const response = await pool.query(queryString, [year]);
+  console.log(response);
+  return response.rows;
+}
+
+
 async function getPowerUsage(timestamp){
   if(typeof timestamp != 'string'){return}
   const sql = `
@@ -93,6 +113,7 @@ const getRowsByTime = async time => {
 module.exports = {
   getAllRows,
   getAllAverages,
+  getYearAverages,
   getPowerUsage,
   getRowsByDate,
   getRowsByTime

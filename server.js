@@ -31,8 +31,9 @@ const api = express();
 
 api.get('/session', db.getRows);
 api.get('/session/average', db.getAverageByRows);
-api.post('/session/date', db.getRowsByDate);
-api.post('/session/time', db.getRowsByTime);
+api.get('/session/average/:year', db.getAverageByYear);
+// api.post('/session/date', db.getRowsByDate);
+// api.post('/session/time', db.getRowsByTime);
 // api.get('/session/:active', db.getRowsByTime);
 // api.get('/session/:reactive', db.getRowsByTime);
 // api.get('/session/:voltage', db.getRowsByTime);

@@ -12,6 +12,12 @@ export const getRowsAverage = async() => {
   return rowsAverage;
 }
 
+export const getRowsYearAverage = async(year) => {
+  const response = await fetch(`${API_URL}/session/average/${year}`);
+  const rowsAverage = await response.json();
+  return rowsAverage;
+}
+
 export const getRowsByDate = async date => {
   const response = await fetch(`${API_URL}/session/date`, {
     method: 'post',

@@ -3,7 +3,7 @@ import {Bar, Line, Pie} from 'react-chartjs-2';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { getRows, getRowsByDate, getRowsAverage } from '../services/rows';
+import { getRows, getRowsByDate, getRowsAverage, getRowsYearAverage } from '../services/rows';
 import { parseToFloat, makeDataArray } from '../services/formatData';
 
 
@@ -14,7 +14,7 @@ class Chart extends Component {
     
     this.state = {
       timestamp: [],
-      query: "",
+      year: "",
       filteredData: [],
       chartData: {
         labels: [],
@@ -34,19 +34,45 @@ class Chart extends Component {
 
 
   handleInputChange = event => {
-    const query = event.target.value;
-    console.log(query);
+    const year = event.target.value;
     this.setState({
-      query: query 
+      year: year 
     })
   };
 
   querySubmit = async event => {
     event.preventDefault();
-    const date = this.state.query;
 
-    const rowsByDate = await getRowsByDate(date)
-    console.log(rowsByDate);
+    const year = this.state.year;
+
+    const rowsByYear = await getRowsYearAverage(year)
+    
+    const rowResult = parseToFloat(rowsByYear);
+      console.log(rowResult);
+
+      const rowValues = makeDataArray(rowResult);
+      console.log(rowValues);
+
+      this.setState({
+        chartData: {
+          labels: [
+            'Global Active Power', 'Global Reactive Power', 'Global Intensity', 'Sub Metering 1', 'Sub Metering 2', 'Sub Metering 3'],
+          datasets: 
+            [{
+              label: 'Power usage',
+              data: rowValues[0],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.6',
+                'rgba(54, 162, 235, 0.6',
+                'rgba(255, 206, 86, 0.6',
+                'rgba(75, 192, 192, 0.6',
+                'rgba(153, 102, 255, 0.6',
+                'rgba(255, 169, 64, 0.6'
+              ]
+            }],
+         
+         }, isLoading: false
+      })
 
   }
 
@@ -127,17 +153,19 @@ class Chart extends Component {
           </div>
           <div className="searchForm">
             <form>
-              <input className="chart-input"
-                placeholder="Search for date in format dd/mm/yyyy"
-                value={this.state.query}
-                onChange={this.handleInputChange}
-              />
-              <button onClick={this.querySubmit}>Submit search</button>
+              <select className="chart-input"
+                onChange={this.handleInputChange}>
+                  <option value="*">All</option>
+                  {Array.from(new Array(5)).map((el, i) => (
+                    <option value={i+2006}>{i+2006}</option>
+                  ))}
+                </select>
+              <button onClick={this.querySubmit}>Select year</button>
             </form>
             <div>{this.state.filteredData.map(i => <p>{i.name}</p>)}</div>
           </div>
           <div className="chart">
-             <Container className="row-card"> {/*key={this.state.chartData.datasets[0].data[0].time}> */}
+             <Container className="row-card" key={this.state.chartData.datasets[0].data[0].time}> 
               {/* Date: {this.state.timestamp[0].date} | Time: {this.state.timestamp[0].time.substring(0, this.state.timestamp[0].time.length -3)} */}
               <Bar
                 data={this.state.chartData}

@@ -26,6 +26,17 @@ const getAverageByRows = async (request, response) => {
   }
 }
 
+const getAverageByYear = async (request, response) => {
+  try {
+    const year = request.params.year;
+    const rowsAverage = await services.getYearAverages(year);
+    return response.status(200).json(rowsAverage);
+  }
+  catch(error) {
+    response.status(500).send("Something went wrong on the server");
+  }
+}
+
 //get rows by date:
 const getRowsByDate = async (request, response) => {
   try {
@@ -65,5 +76,6 @@ module.exports = {
   getRows,
   getAverageByRows,
   getRowsByDate,
-  getRowsByTime
+  getRowsByTime,
+  getAverageByYear
 };
