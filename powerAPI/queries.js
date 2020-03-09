@@ -7,7 +7,6 @@ const services = require('./services/services');
 const getRows = async (request, response) => {
   try {
     const rows = await services.getAllRows();
-    console.log(rows);
     return response.status(200).json(rows);
   }
   catch(error) {

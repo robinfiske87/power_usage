@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Bar, Line, Pie} from 'react-chartjs-2';
+import {Bar, Line} from 'react-chartjs-2';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { getRows, getRowsByDate, getRowsAverage, getRowsYearAverage } from '../services/rows';
+import { getRowsAverage, getRowsYearAverage } from '../services/rows';
 import { parseToFloat, makeDataArray } from '../services/formatData';
 
 
@@ -13,7 +13,6 @@ class Chart extends Component {
     super(props);
     
     this.state = {
-      timestamp: [],
       year: "",
       filteredData: [],
       chartData: {
@@ -83,13 +82,10 @@ class Chart extends Component {
       const tableRows = await getRowsAverage();
     
       const rowResult = parseToFloat(tableRows);
-      console.log(rowResult);
 
       const rowValues = makeDataArray(rowResult);
-      console.log(rowValues);
 
       this.setState({
-        // timestamp: rowResult,
         chartData: {
           labels: [
             'Global Active Power', 'Global Reactive Power', 'Global Intensity', 'Sub Metering 1', 'Sub Metering 2', 'Sub Metering 3'],
@@ -133,13 +129,6 @@ class Chart extends Component {
     }
 
 
-    // const dataChart = chartData.datasets.map(dataset => {
-    //    dataset.data.map({ date, time, global_active_power, global_reactive_power, voltage, global_intensity, sub_metering_1, sub_metering_2, sub_metering_3 })
-       
-    //   }
-    
-
-
     return(
       <React.Fragment>
         <Container className="graph-card">
@@ -151,6 +140,7 @@ class Chart extends Component {
               Do you want to return to the overview?
             </Link>
           </div>
+
           <div className="searchForm">
             <form>
               <select className="chart-input"
@@ -164,6 +154,7 @@ class Chart extends Component {
             </form>
             <div>{this.state.filteredData.map(i => <p>{i.name}</p>)}</div>
           </div>
+          
           <div className="chart">
              <Container className="row-card" key={this.state.chartData.datasets[0].data[0].time}> 
               {/* Date: {this.state.timestamp[0].date} | Time: {this.state.timestamp[0].time.substring(0, this.state.timestamp[0].time.length -3)} */}
@@ -177,7 +168,7 @@ class Chart extends Component {
                       fontSize: 25
                     },
                 legend:{
-                  display: true,
+                  display: false,
                   position: 'right'
                 }
               }}

@@ -24,7 +24,6 @@ const getAllRows = async () => {
   `;
 
   const response = await pool.query(queryString);
-  console.log(response);
   return response.rows;
 }
 
@@ -57,9 +56,7 @@ const getYearAverages = async (year) => {
   WHERE
     right(Date, 4) = $1;
   `;
-console.log(year);
   const response = await pool.query(queryString, [year]);
-  console.log(response);
   return response.rows;
 }
 
