@@ -1,0 +1,38 @@
+input {
+  width:300px;
+  height: 50px;
+  float: center;
+}
+
+.searchForm {
+  padding: 0.5em;
+  display: flex;
+}
+
+.container {
+  margin-top: 10px;
+}
+
+.graph-card {
+  width: 900px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 1em;
+}
+
+.graph-link-container {
+  padding: 1em;
+}
+
+.row-card {
+  width: 850px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 1em;
+}
+
+.row-date {
+  font-weight: bold;
+}
+
+.row-timestamp {
+  font-weight: bold;
+}
