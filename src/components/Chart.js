@@ -145,7 +145,7 @@ class Chart extends Component {
             <form>
               <select className="chart-input"
                 onChange={this.handleInputChange}>
-                  <option value="*">All</option>
+                  <option value="2006">All</option>
                   {Array.from(new Array(5)).map((el, i) => (
                     <option value={i+2006}>{i+2006}</option>
                   ))}
@@ -154,7 +154,7 @@ class Chart extends Component {
             </form>
             <div>{this.state.filteredData.map(i => <p>{i.name}</p>)}</div>
           </div>
-          
+
           <div className="chart">
              <Container className="row-card" key={this.state.chartData.datasets[0].data[0].time}> 
               {/* Date: {this.state.timestamp[0].date} | Time: {this.state.timestamp[0].time.substring(0, this.state.timestamp[0].time.length -3)} */}
