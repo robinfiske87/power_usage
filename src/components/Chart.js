@@ -43,8 +43,37 @@ class Chart extends Component {
     event.preventDefault();
 
     const year = this.state.year;
+    if (year === '*'){
+      const rowsByAverage = await getRowsAverage();
+    
+    const rowResult = parseToFloat(rowsByAverage);
+      console.log(rowResult);
 
-    const rowsByYear = await getRowsYearAverage(year)
+      const rowValues = makeDataArray(rowResult);
+      console.log(rowValues);
+
+      this.setState({
+        chartData: {
+          labels: [
+            'Global Active Power', 'Global Reactive Power', 'Global Intensity', 'Sub Metering 1', 'Sub Metering 2', 'Sub Metering 3'],
+          datasets: 
+            [{
+              label: 'Power usage',
+              data: rowValues[0],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.6',
+                'rgba(54, 162, 235, 0.6',
+                'rgba(255, 206, 86, 0.6',
+                'rgba(75, 192, 192, 0.6',
+                'rgba(153, 102, 255, 0.6',
+                'rgba(255, 169, 64, 0.6'
+              ]
+            }],
+         
+         }, isLoading: false
+      })
+    } else {
+      const rowsByYear = await getRowsYearAverage(year)
     
     const rowResult = parseToFloat(rowsByYear);
       console.log(rowResult);
@@ -72,7 +101,7 @@ class Chart extends Component {
          
          }, isLoading: false
       })
-
+    } 
   }
 
 
@@ -113,6 +142,7 @@ class Chart extends Component {
           }
         }
 
+
   render() {
   const {isLoading, error} = this.state;
 
@@ -127,7 +157,6 @@ class Chart extends Component {
         <div>Loading data...</div>
       );
     }
-
 
     return(
       <React.Fragment>
@@ -145,7 +174,7 @@ class Chart extends Component {
             <form>
               <select className="chart-input"
                 onChange={this.handleInputChange}>
-                  <option value="2006">All</option>
+                  <option value="*">All</option>
                   {Array.from(new Array(5)).map((el, i) => (
                     <option value={i+2006}>{i+2006}</option>
                   ))}
